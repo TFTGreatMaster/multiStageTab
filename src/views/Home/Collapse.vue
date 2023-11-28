@@ -24,10 +24,6 @@ const handleDisable = () => useDisable(activeKey, onDisableUp, onDisableDown);
 
 const text = `A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.`;
 
-function getCollapseActive() {
-  return unref(activeKey);
-}
-
 function onDownAllCollapse() {
   activeKey.value = ["1", "2", "3"];
 }
@@ -35,11 +31,7 @@ function onUpAllCollapse() {
   activeKey.value = [];
 }
 
-const onClickUp = inject("onClickUp", (param) => {});
-const onClickDown = inject("onClickDown", (param) => {});
-
 watch(activeKey, () => {
-  console.log("🚀 ~ file: Collapse.vue:57 ~ watch ~ activeKey:", activeKey);
   handleDisable();
 });
 onMounted(() => {

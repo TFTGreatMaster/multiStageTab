@@ -1,21 +1,21 @@
 <template>
   <main id="card">
-    <a-tabs v-model:activeKey="activeKey" type="card" @change="handleChange" destroyInactiveTabPane>
+    <a-tabs v-model:activeKey="activeKey" type="card" @change="handleChange">
       <a-tab-pane key="1" tab="Tab 1"
         ><Collapse ref="refCollapse1"
       /></a-tab-pane>
-      <a-tab-pane key="2" tab="Tab 2" ref="refCollapse2"
-        ><Collapse
+      <a-tab-pane key="2" tab="Tab 2"
+        ><Collapse ref="refCollapse2"
       /></a-tab-pane>
-      <a-tab-pane key="3" tab="Tab 3" ref="refCollapse3"
-        ><Collapse
+      <a-tab-pane key="3" tab="Tab 3"
+        ><Collapse ref="refCollapse3"
       /></a-tab-pane>
     </a-tabs>
   </main>
 </template>
 
 <script lang="ts" setup>
-import { ref, unref, onMounted, watch, nextTick, inject } from "vue";
+import { ref, unref, onMounted, nextTick, inject } from "vue";
 import Collapse from "./Collapse.vue";
 import { useDisable } from "./hook";
 
@@ -30,21 +30,43 @@ const refCollapse3 = ref();
 
 const handleClickTab = () => {
   if (unref(activeKey) === "1") {
-    console.log("a", unref(refCollapse1).activeKey);
-    useDisable(unref(refCollapse1).activeKey, onDisableUp, onDisableDown);
+    useDisable(refCollapse1.value.activeKey, onDisableUp, onDisableDown);
   } else if (unref(activeKey) === "2") {
-    console.log("a", unref(refCollapse1).activeKey);
     useDisable(unref(refCollapse2).activeKey, onDisableUp, onDisableDown);
   } else if (unref(activeKey) === "3") {
-    console.log("a", unref(refCollapse1).activeKey);
     useDisable(unref(refCollapse3).activeKey, onDisableUp, onDisableDown);
   }
 };
 
+const handleClickUp = () => {
+  if (unref(activeKey) === "1") {
+    unref(refCollapse1).onUpAllCollapse();
+  } else if (unref(activeKey) === "2") {
+    unref(refCollapse2).onUpAllCollapse();
+  } else if (unref(activeKey) === "3") {
+    unref(refCollapse3).onUpAllCollapse();
+  }
+};
+
+const handleClickDown = () => {
+  if (unref(activeKey) === "1") {
+    unref(refCollapse1).onDownAllCollapse();
+  } else if (unref(activeKey) === "2") {
+    unref(refCollapse2).onDownAllCollapse();
+  } else if (unref(activeKey) === "3") {
+    unref(refCollapse3).onDownAllCollapse();
+  }
+};
+
 const handleChange = () => {
-  console.log("vafo");
   nextTick(() => handleClickTab());
 };
+
+defineExpose({
+  handleClickTab,
+  handleClickUp,
+  handleClickDown,
+});
 
 onMounted(() => handleClickTab());
 </script>
